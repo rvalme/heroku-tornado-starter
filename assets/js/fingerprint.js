@@ -51,7 +51,6 @@ function userTrack() {
 		for(var i = 0; i < plug.length; i++) {
 			concat_plugs =concat_plugs + plug[i]['name'] + plug[i]['filename'] + plug[i]['description'] + ',';
 		}
-		document.getElementById("plugins").innerHTML = 'Plugins: ' + concat_plugs;
 
         ws.onmessage = function(e) {
             //alert(e.data);
