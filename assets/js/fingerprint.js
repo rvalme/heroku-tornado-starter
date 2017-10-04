@@ -43,8 +43,8 @@ function sendMsg() {
     ws.send(document.getElementById('msg').value);
 }
 function userTrack() {
-        //ws = new WebSocket("ws://rsvalme.herokuapp.com/websocket");
-        ws = new WebSocket("ws://localhost:5000/websocket");
+        ws = new WebSocket("ws://rsvalme.herokuapp.com/websocket");
+        //ws = new WebSocket("ws://localhost:5000/websocket");
         document.getElementById("user_browser").innerHTML = 'Browser Name: ' +browserName;
 
         ws.onmessage = function(e) {
