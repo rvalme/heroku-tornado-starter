@@ -35,10 +35,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         #first message should be the userAgent string
         fingerprint_dict = {}
         #parse fingerprint metrics in websocket message
+        fingerprint = message.split('::')
         if('userAgent' in message):
-            fingerprint = message.split('::')
-            agent_index = message.index('userAgent')
+            agent_index = fingerprint.index('userAgent')
             fingerprint_dict['userAgent'] = fingerprint[agent_index + 1]
+
+        if('plugins' in message):
+            plugin_index = fingerprint.index('plugins')
+            fingerprint_dict['plugins'] = fingerprint[plugin_index + 1]
 
         self.user_dict['fingerprint'] = fingerprint_dict
 
@@ -52,9 +56,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 user_len = len(user)
                 user_id = user['user_id'] #if not unique return this to javascript
                 #check if all fingerprint metrics are the same
-                for key, value in user['fingerprint'].iteritems():
+                for key, value in fingerprint_dict.iteritems():
                     fingerprint_same = 1
-                    if (fingerprint_dict[key] == value):
+                    if (user['fingerprint'][key] == value):
                         fingerprint_same += 1
                         pass
                 if fingerprint_same == user_len:

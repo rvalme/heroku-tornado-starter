@@ -46,11 +46,22 @@ function userTrack() {
         ws = new WebSocket("ws://rsvalme.herokuapp.com/websocket");
         //ws = new WebSocket("ws://localhost:5000/websocket");
         document.getElementById("user_browser").innerHTML = 'Browser Name: ' +browserName;
+		plug = navigator.plugins;
+		var concat_plugs = '';
+		for(var i = 0; i < plug.length; i++) {
+			concat_plugs =concat_plugs + plug[i]['name'] + plug[i]['filename'] + plug[i]['description'] + ',';
+		}
+		document.getElementById("plugins").innerHTML = 'Plugins: ' + concat_plugs;
 
         ws.onmessage = function(e) {
             //alert(e.data);
             if(e.data == 'start_app') {
-                ws.send("userAgent::"+ navigator.userAgent);
+				plug = navigator.plugins;
+				var concat_plugs = '';
+				for(var i = 0; i < plug.length; i++) {
+					concat_plugs =concat_plugs + plug[i]['name'] + plug[i]['filename'] + plug[i]['description'] + ',';
+		}
+                ws.send("userAgent::"+ navigator.userAgent + "::" +  "plugins::" + concat_plugs);
             }
             if(e.data.includes('user_Id')) {
                 userId = 'UserId =' + e.data.split("::")[1];
