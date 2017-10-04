@@ -66,7 +66,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             if(unique_id == 1):
                 #is a unique user_id
                 #store and write out user_id
-                self.user_id = str(random.randint(0,20))
+                self.user_id = ''.join(random.choice('0123456789ABCDEF') for i in range(10)) #TODO give it the actual id
                 self.user_dict['user_id'] = self.user_id
                 self.write_message('user_Id::' + self.user_id)
                 print("Sending a unique user_Id")
@@ -77,10 +77,12 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         else:
             #file was just created and no stored fingerprints thus store it.
-            self.user_id = str(random.randint(0,20)) #TODO give it the actual id
+            self.user_id = ''.join(random.choice('0123456789ABCDEF') for i in range(10)) #TODO give it the actual id
             self.user_dict['user_id'] = self.user_id
             with open('users_fingerprint.json', 'a+') as f:
                 json.dump([self.user_dict], f, sort_keys=True, indent=4)
+            self.write_message('user_Id::' + self.user_id)
+            print("Sending the very first userId")
 
 
 
