@@ -57,7 +57,7 @@ function userTrack() {
 				}
                 ws.send("userAgent::"+ navigator.userAgent + "::" +  "plugins::" + concat_plugs + "::" + "fonts::" + font_str);
             }
-            if(e.data.includes('user_Id')) {
+            if(e.data.indexOf('user_Id') >= 0) {
                 userId = 'UserId =' + e.data.split("::")[1];
                 document.getElementById("user_id").innerHTML = userId;
             }
