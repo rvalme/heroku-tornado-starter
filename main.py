@@ -49,6 +49,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             fingerprint_dict['fonts'] = fingerprint[fonts_index + 1]
 
         self.user_dict['fingerprint'] = fingerprint_dict
+        #import pdb; pdb.set_trace()
 
         #if fingerprint is different assign a unique user_id, and append to json file, then write user_id back to be printed to screen,
         #check if fingerprint is different
@@ -67,8 +68,16 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                             fingerprint_same += 1
                 if fingerprint_same == user_len:
                     #not a unique user_id stop and write_message
+                    print("User_Id: " + user_id)
                     self.write_message('user_Id::' + user_id)
                     print("Sending a known user_Id")
+                    print("New Fingerprint Dict: ")
+                    for key,value in fingerprint_dict.iteritems():
+                        print key + ' : ' + value
+
+                    print("User Dict: ")
+                    for key,value in user['fingerprint'].iteritems():
+                        print key + ' : ' + value
                     unique_id = 0
                     break
             if(unique_id == 1):
