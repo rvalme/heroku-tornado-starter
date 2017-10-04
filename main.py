@@ -44,6 +44,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             plugin_index = fingerprint.index('plugins')
             fingerprint_dict['plugins'] = fingerprint[plugin_index + 1]
 
+        if('fonts' in message):
+            fonts_index = fingerprint.index('fonts')
+            fingerprint_dict['fonts'] = fingerprint[fonts_index + 1]
+
         self.user_dict['fingerprint'] = fingerprint_dict
 
         #if fingerprint is different assign a unique user_id, and append to json file, then write user_id back to be printed to screen,
@@ -53,14 +57,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 total_user_fdict = json.load(json_data)
             unique_id = 1
             for user in total_user_fdict:
-                user_len = len(user)
+                user_len = len(fingerprint_dict)
                 user_id = user['user_id'] #if not unique return this to javascript
                 #check if all fingerprint metrics are the same
+                fingerprint_same = 0
                 for key, value in fingerprint_dict.iteritems():
-                    fingerprint_same = 1
-                    if (user['fingerprint'][key] == value):
-                        fingerprint_same += 1
-                        pass
+                    if(key in user['fingerprint'].keys()):
+                        if (user['fingerprint'][key] == value):
+                            fingerprint_same += 1
                 if fingerprint_same == user_len:
                     #not a unique user_id stop and write_message
                     self.write_message('user_Id::' + user_id)
